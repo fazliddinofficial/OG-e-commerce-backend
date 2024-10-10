@@ -1,9 +1,9 @@
 const { model, Schema } = require('mongoose');
 const productSchema = new Schema({
-    name: { type: String, required: true, trim: true, minLength: 3, maxLength: 20 },
-    sizes: [{ type: String, required: true }],
+    name: { type: String, required: true, trim: true, minLength: 2, maxLength: 20 },
+    sizes: [{ type: Number, required: true }],
     price: { type: Number, required: true, min: 0 },
-    discountPrice: { type: Number, required: true, },
+    discountPrice: { type: Number },
     colors: [{ type: String, required: true, trim: true }],
     description: { type: String, trim: true },
     images: [{ type: String, required: true, trim: true }],
@@ -17,5 +17,5 @@ const productSchema = new Schema({
 
 }, { timestamps: true });
 
-const productsSchema = model('Product', productSchema);
-module.exports = productsSchema;
+const Products = model('Product', productSchema);
+module.exports = Products;
