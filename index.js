@@ -10,7 +10,7 @@ app.use(express.json())
 
 const PORT = 9000;
 
-app.post('/', async (req, res) => {
+app.post('/api/post', async (req, res) => {
 
     try {
         const { error, value } = validateCreatedProduction(req.body);
@@ -24,14 +24,48 @@ app.post('/', async (req, res) => {
         console.error(error);
         res.status(500).send('Error while creating the product')
     }
-})
-app.delete('/delete', (req, res) => {
-    res.send('delete method')
+});
+app.put('/api/products/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const product = await Product.findByIdAndUpdate(id, req.body)
+        if (!product) {
+            return res.status(404).send('wrong action');
+        }
+        const updatedProduct = await Product.findById(id);
+        res.status(200).json(updatedProduct);
+        console.log('product updated')
+    } catch (error) {
+        res.status(500).send(error)
+    }
 })
 
-app.get('/', (req, res) => {
-    res.send('this is get request')
-});
+app.get('/api/products', async (req, res) => {
+    try {
+        const foundProduct = await Product.find({})
+        res.status(200).json(foundProduct);
+    } catch (error) {
+        res.status(404).send('not found')
+    }
+})
+app.get('/api/products/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const foundProduct = await Product.findById(id)
+        res.status(200).json(foundProduct);
+        console.log(foundProduct)
+    } catch (error) {
+        res.status(404).send('product not found')
+    }
+})
+
+
+app.delete('/api/products/:id', (req, res) => {
+    try {
+    } catch (error) {
+        res.status(400).send('error during deleting the product')
+    }
+})
 app.put('/put', (req, res) => {
     res.send('put method is working')
 })
