@@ -1,6 +1,6 @@
 const { model, Schema } = require('mongoose');
 
-const users = new Schema({
+const userSchema = new Schema({
     name: { type: String, required: true, trim: true },
     address: { type: String, required: true },
     email: { type: String, trim: true },
@@ -9,7 +9,6 @@ const users = new Schema({
     favourites: [{ type: String, trim: false }],
 }, { timestamps: true });
 
-const usersSchema = model('User', users);
-module.exports = usersSchema;
+const Users = model('User', userSchema);
+module.exports = Users;
 
- 
