@@ -60,8 +60,15 @@ app.get('/api/products/:id', async (req, res) => {
 })
 
 
-app.delete('/api/products/:id', (req, res) => {
+app.delete('/api/products/product', async (req, res) => {
     try {
+        const product = req.body
+        const foundProduct = await Product.findOneAndDelete(product);
+        if (!foundProduct) {
+            return res.status(404).send('product not found')
+        }
+        res.status(200).send('deleted successfully')
+
     } catch (error) {
         res.status(400).send('error during deleting the product')
     }
