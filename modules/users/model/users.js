@@ -8,7 +8,7 @@ const userSchema = new Schema(
     email: { type: String, trim: true },
     password: { type: String, required: true },
     number: { type: String, required: true },
-    favourites: [{ type: String }],
+    favorites: [{ type: String }],
   },
   { timestamps: true }
 );

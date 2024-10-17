@@ -6,6 +6,7 @@ const Product = require("./modules/products/model/product");
 const Joi = require("joi");
 const { validateCreatedProduction } = require("./modules/users/validations");
 const { usersRoutes } = require("./modules/users");
+const { validateCreatedUser } = require("./modules/users/validations/users");
 
 app.use(express.json());
 const PORT = 9000;
@@ -16,20 +17,25 @@ app.post("/api/products/create", async (req, res) => {
   try {
     const { error, value } = validateCreatedProduction(req.body);
     if (error) {
-      res.status(400).json(error);
+      res.status(400).send(error);
       return;
     }
     const product = await Product.create(value);
     res.status(201).send(product);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Error while creating the product");
+    res.status(500).send("Error during creating the product");
   }
 });
 
 app.put("/api/products/:id", async (req, res) => {
   try {
     const { id } = req.params;
+    const { error, value } = validateCreatedUser(req.body);
+    if (error) {
+      return res.status(400).send(error);
+    }
+    res.status(200).json(value);
     // Add JOI validations to req.body
     const product = await Product.findByIdAndUpdate(id, req.body, {
       new: true,
@@ -75,7 +81,9 @@ app.delete("/api/products/product", async (req, res) => {
     res.status(400).send("error during deleting the product");
   }
 });
-
+app.get("/", (req, res) => {
+  res.send("you are main page");
+});
 mongoose
   .connect(process.env.MONGODB_URL)
   .then(console.log("Mongodb connected"));

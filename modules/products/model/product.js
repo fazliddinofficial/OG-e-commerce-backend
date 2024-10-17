@@ -1,6 +1,13 @@
-const { model, Schema } = require('mongoose');
-const productSchema = new Schema({
-    name: { type: String, required: true, trim: true, minLength: 2, maxLength: 20 },
+const { model, Schema } = require("mongoose");
+const productSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+      minLength: 2,
+      maxLength: 20,
+    },
     sizes: [{ type: Number, required: true }],
     price: { type: Number, required: true, min: 0 },
     discountPrice: { type: Number },
@@ -14,8 +21,9 @@ const productSchema = new Schema({
     deletedBy: { type: Schema.Types.ObjectId, ref: "User" },
     deletedAt: { type: Date },
     changedBy: { type: Schema.Types.ObjectId, ref: "User" },
+  },
+  { timestamps: true }
+);
 
-}, { timestamps: true });
-
-const Products = model('Product', productSchema);
+const Products = model("Product", productSchema);
 module.exports = Products;
