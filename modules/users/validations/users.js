@@ -7,7 +7,7 @@ exports.validateCreatedUser = function (data) {
     email: Joi.string().trim(),
     password: Joi.string().required(),
     number: Joi.string().required(),
-    favourites: Joi.array().items(Joi.string()),
+    favorites: Joi.array().items(Joi.string()),
   });
   return schema.validate(data);
 };
