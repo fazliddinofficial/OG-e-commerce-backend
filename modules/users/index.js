@@ -1,46 +1,54 @@
 const Users = require("./model/users");
 const express = require("express");
+const { validateCreatedUser } = require("./validation/users");
 const app = express.Router();
 
 app.use(express.json());
 
-app.post("/users", async function (req, res) {
+app.get("/", (req, res) => {
+  res.send("this is users page");
+});
+
+app.post("/", async function (req, res) {
   try {
-    const user = req.body;
-    if (!user) {
-      res.status(404).send("error during creating user");
+    const { error, value } = validateCreatedUser(req.body);
+    if (error) {
+      return res.status(400).send("Error during creating user");
     }
-    const createdUser = await Users.create(user);
+    const createdUser = await Users.create(value);
     res.status(201).json(createdUser);
   } catch (error) {
     console.log(error);
     req.status(500).send(error);
   }
 });
-app.get("/users/:id", async (req, res) => {
+app.get("/:id", async (req, res) => {
   try {
-    const { id } = req.body;
-    const user = Users.findById(id);
+    const { id } = req.params;
+    const user = await Users.findById(id);
     if (!user) {
       res.status(404).send("User not found");
+      return;
     }
     res.status(200).json(user);
   } catch (error) {
-    req.status(500).send(error);
+    res.status(500).send(error);
   }
 });
-app.get("/users", async (req, res) => {
+
+app.get("/", async (req, res) => {
   try {
-    const users = Users.find({});
+    const users = await Users.find({});
     if (!users) {
       res.status(404).send("Users not found");
+      return;
     }
     res.status(200).json(users);
   } catch (error) {
-    req.status(500).send(error);
+    res.status(500).send(error);
   }
 });
-app.delete("/users/user", async (req, res) => {
+app.delete("/", async (req, res) => {
   try {
     const user = req.body;
     const foundUser = await Users.findOneAndDelete(user);

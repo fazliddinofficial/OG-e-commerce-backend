@@ -1,4 +1,3 @@
-const { required } = require("joi");
 const { model, Schema } = require("mongoose");
 
 const userSchema = new Schema(
