@@ -27,10 +27,10 @@ app.put("/:id", async (req, res) => {
     if (error) {
       return res.status(400).send(error);
     }
-    res.status(200).json(value);
     const product = await Product.findByIdAndUpdate(id, req.body, {
       new: true,
     });
+    res.status(200).json(value);
     if (!product) {
       return res.status(404).send("Product not found!");
     }

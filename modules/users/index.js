@@ -18,8 +18,7 @@ app.post("/", async function (req, res) {
     const createdUser = await Users.create(value);
     res.status(201).json(createdUser);
   } catch (error) {
-    console.log(error);
-    req.status(500).send(error);
+    res.status(500).send(error);
   }
 });
 app.get("/:id", async (req, res) => {
@@ -33,6 +32,22 @@ app.get("/:id", async (req, res) => {
     res.status(200).json(user);
   } catch (error) {
     res.status(500).send(error);
+  }
+});
+
+app.put("/update/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { error } = validateCreatedUser(req.body);
+    if (error) {
+      return res.status(400).send("User not found");
+    }
+    await Users.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    res.status(200).send("User successfully updated");
+  } catch (error) {
+    res.status(500).send("Error on server");
   }
 });
 
