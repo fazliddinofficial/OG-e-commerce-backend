@@ -44,7 +44,7 @@ app.put("/update/:id", async (req, res) => {
     });
     res.status(200).json(changedOrderedItem);
   } catch (error) {
-    res.status(500).send("Something is wrong with server");
+    res.status(500).send("Something is wrong on server");
   }
 });
 

@@ -7,7 +7,7 @@ const { productsRoute } = require("./modules/products/index");
 const { orderedItemsRoutes } = require("./modules/orderedItems");
 
 app.use(express.json());
-const PORT = 9000;
+const PORT = 5000;
 
 app.use("/users", usersRoutes);
 app.use("/products", productsRoute);

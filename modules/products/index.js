@@ -1,11 +1,10 @@
-const express = require("express");
-const app = express();
+const { Router } = require("express");
 const Product = require("./model/product");
 const { validateCreatedProduction } = require("./validation/index");
 
-app.use(express.json());
+const productsRoute = Router();
 
-app.post("/", async (req, res) => {
+productsRoute.post("/", async (req, res) => {
   try {
     const { error, value } = validateCreatedProduction(req.body);
     if (error) {
@@ -20,7 +19,7 @@ app.post("/", async (req, res) => {
   }
 });
 
-app.put("/:id", async (req, res) => {
+productsRoute.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { error, value } = validateCreatedUser(req.body);
@@ -40,7 +39,7 @@ app.put("/:id", async (req, res) => {
   }
 });
 
-app.get("/", async (req, res) => {
+productsRoute.get("/", async (req, res) => {
   try {
     const foundProduct = await Product.find({});
     res.status(200).json(foundProduct);
@@ -49,7 +48,7 @@ app.get("/", async (req, res) => {
   }
 });
 
-app.get("/:id", async (req, res) => {
+productsRoute.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const foundProduct = await Product.findById(id);
@@ -60,20 +59,23 @@ app.get("/:id", async (req, res) => {
   }
 });
 
-app.delete("/", async (req, res) => {
+productsRoute.delete("/", async (req, res) => {
   try {
     const product = req.body;
     const foundProduct = await Product.findOneAndDelete(product);
+
     if (!foundProduct) {
       return res.status(404).send("product not found");
     }
+
     res.status(200).send("deleted successfully");
   } catch (error) {
     res.status(400).send("error during deleting the product");
   }
 });
-app.get("/", (req, res) => {
+
+productsRoute.get("/", (req, res) => {
   res.send("you are main page");
 });
 
-exports.productsRoute = app;
+exports.productsRoute = productsRoute;
