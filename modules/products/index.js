@@ -53,7 +53,7 @@ productsRoute.get("/:id", async (req, res) => {
     const { id } = req.params;
     const foundProduct = await Product.findById(id);
     res.status(200).json(foundProduct);
-    console.log(foundProduct);
+
   } catch (error) {
     res.status(404).send("Product not found");
   }
