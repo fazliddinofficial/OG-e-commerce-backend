@@ -77,20 +77,4 @@ app.delete("/", async (req, res) => {
   }
 });
 
-
-app.delete("/", async (req, res) => {
-  try {
-    const user = req.body;
-    const foundUser = await Users.findOneAndDelete(user);
-    if (!foundUser) {
-      res.status(404).send("User not found!");
-      return;
-    }
-    res.status(200).send("User successfully deleted!");
-  } catch (error) {
-    res.status(400).send(error);
-  }
-});
-
-
 exports.usersRoutes = app;
